@@ -1,3 +1,4 @@
+#pragma once
 #include "stdafx.h"
 
 class Point{
@@ -8,7 +9,8 @@ public:
 	float getY();
 	float getZ();
 
-	bool isEqual(Point toCompare);
+	bool operator==(Point& rhs);
+	bool operator!=(Point& rhs);
 
 	void translate(Vector toAdd);
 private:

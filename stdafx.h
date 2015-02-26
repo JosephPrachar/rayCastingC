@@ -9,14 +9,15 @@
 
 #include <stdio.h>
 #include <tchar.h>
-
-#include "Point.h"
+#include "Utility.h"
 #include "Vector.h"
-#include "Sphere.h"
+#include "Point.h"
+#include "Ray.h"
 #include "Color.h"
 #include "Finish.h"
-#include "Ray.h"
-#include "Utility.h"
+#include "Sphere.h"
+#include "Light.h"
+
 
 
 // TODO: reference additional headers your program requires here

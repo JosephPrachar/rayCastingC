@@ -1,3 +1,4 @@
+#pragma once
 #include "stdafx.h"
 
 class Finish{
@@ -9,9 +10,12 @@ public:
 	float getSpecular();
 	float getRoughness();
 
+	bool operator==(Finish& rhs);
+	bool operator!=(Finish& rhs);
+
 private:
 	float mAmbient;
 	float mDiffuse;
 	float mSpecular;
 	float mRough;
-}
+};

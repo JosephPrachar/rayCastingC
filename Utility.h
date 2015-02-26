@@ -1,5 +1,5 @@
-#include "stdafx.h"
+#pragma once
 
-bool epsilon_equal(float n, float m, float epsilon = .00001){
+inline bool eEqual(float n, float m, float epsilon = .00001){
 	return (n - epsilon) < m && (n + epsilon > m);
 }

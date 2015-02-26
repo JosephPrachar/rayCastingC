@@ -1,3 +1,4 @@
+#pragma once
 #include "stdafx.h"
 
 class Light{
@@ -6,6 +7,9 @@ public:
 
 	Point getPoint();
 	Color getColor();
+
+	bool operator==(Light& rhs);
+	bool operator!=(Light& rhs);
 
 private:
 	Point mPoint;

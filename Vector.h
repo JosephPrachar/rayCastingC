@@ -1,16 +1,17 @@
+#pragma once
 #include "stdafx.h"
 
 class Vector{
 public:
 	Vector(float x, float y, float z);
-	Vector(Point from, Point to);
 
 	float getX();
 	float getY();
 	float getZ();
 	float getLength();
 
-	bool isEqual(Vector toCompare);
+	bool operator==(Vector& rhs);
+	bool operator!=(Vector& lhs);
 
 	void normalize();
 	void scale(float scalar);
