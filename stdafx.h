@@ -5,6 +5,8 @@
 
 #pragma once
 
+typedef unsigned char byte;
+
 #include "targetver.h"
 
 #include <stdio.h>

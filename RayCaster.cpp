@@ -15,52 +15,71 @@ RayCaster::RayCaster(Window view, Point eyePoint, Sphere* sphereList, int listLe
 }
 
 void RayCaster::castAllRays(ofstream* outputFile){
+	long size = mView.width * mView.height * 3;
+	byte* picture = new byte[size];
+	Intersection* hitPointMem = new Intersection[this->mListLength];
 
-	while (curY > this->mView.y_min){
-		Color result = this->castRay();
-		this->printColor(outputFile, result);
-		//*outputFile << "x: " << this->curX << " y: " << this->curY << "\n";
+	long count = 0;
+
+	while (count < size){
+		Color result = this->castRay(hitPointMem);
+		result.scaleForPrinting();
+
+		picture[count] = (byte)result.getRed();
+		count++;
+		picture[count] = (byte)result.getGreen();
+		count++;
+		picture[count] = (byte)result.getBlue();
+		count++;
+
+		// this->printColor(outputFile, result);	// lol system calls are expensive...
 		this->advanceCastPoint();
 	}
 
+	this->printPicture(outputFile, picture);
+
+	delete[] hitPointMem;
+	delete[] picture;
 }
 
-void RayCaster::printColor(ofstream* outputFile, Color toPrint){
-	toPrint.scaleForPrinting();
-	*outputFile << toPrint.getRed() << " " << toPrint.getGreen() << " " << toPrint.getBlue() << "\n";
+void RayCaster::printPicture(ofstream* outputFile, byte* pic){
+	long size = mView.width * mView.height * 3;	
+
+	for (int i = 0; i < size; ++i){
+		*outputFile << (int)pic[i] << ' ';
+	}
+
+	//*outputFile << toPrint.getRed() << " " << toPrint.getGreen() << " " << toPrint.getBlue() << "\n";
 }
 
-Color RayCaster::castRay(){
+Color RayCaster::castRay(Intersection* hitPointMem){
 	Color toReturn = Color(1.0, 1.0, 1.0);
 
 	Point pt = Point(curX, curY, 0);
 	Vector v = Point::vectorFromTo(this->mEye, pt);
 	Ray ray = Ray(pt, v);
 	
-	int length = -1;
-	Intersection* hitPoints = this->findIntersectionPoints(ray, &length);
+	int length = this->findIntersectionPoints(ray, hitPointMem);
 
 	if (length != 0){
 		toReturn.scale(0);
 	}
 
-	delete[] hitPoints;
 	return toReturn;
 }
 
-Intersection* RayCaster::findIntersectionPoints(Ray ray, int* lengthOfArray){
-	LinkedList<Intersection> list = LinkedList<Intersection>(Intersection(this->mSphereList[0], ray.getPoint()));
-
+int RayCaster::findIntersectionPoints(Ray ray, Intersection* hitPointMem){	
+	int count = 0;
 	for (int i = 0; i < this->mListLength; ++i){
 		bool hit = false;
 		Point pt = this->mSphereList[i].rayIntersection(ray, &hit);
 		if (hit == true){
-			list.add(Intersection(this->mSphereList[i], pt));
+			hitPointMem[count] = Intersection(this->mSphereList[i], pt);
+			count++;
 		}
 	}
 
-	*lengthOfArray = list.getLength();
-	return list.toArray();
+	return count;
 }
 
 void RayCaster::advanceCastPoint(){
