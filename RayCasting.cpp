@@ -30,8 +30,6 @@ int _tmain(int argc, _TCHAR* argv[])
 
 void printHeader(ofstream* myFile, int width, int height){
 	*myFile << "P3\n";
-	*myFile << width; 
-	*myFile << " ";
-	*myFile << height;
+	*myFile << width << ' ' << height;
 	*myFile << "\n255\n";
 }

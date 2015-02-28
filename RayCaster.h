@@ -27,4 +27,5 @@ private:
 
 	void advanceCastPoint();
 	void printPicture(ofstream* outputFile, byte* pic);
+	char* byteDecompose(byte num);
 };

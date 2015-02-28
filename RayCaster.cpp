@@ -44,12 +44,33 @@ void RayCaster::castAllRays(ofstream* outputFile){
 
 void RayCaster::printPicture(ofstream* outputFile, byte* pic){
 	long size = mView.width * mView.height * 3;	
+	char* buffer = new char[size * 4];
 
+	long pos = 0;
 	for (int i = 0; i < size; ++i){
-		*outputFile << (int)pic[i] << ' ';
-	}
+		char* nums = this->byteDecompose(pic[i]);
+		for (int j = 0; j < 3; ++j){
+			buffer[pos] = nums[j];
+			pos++;
+		}
+		buffer[pos] = ' ';
+		pos++;
 
+		//*outputFile << (int)pic[i] << ' ';
+	}
+	outputFile->write(buffer, pos);
 	//*outputFile << toPrint.getRed() << " " << toPrint.getGreen() << " " << toPrint.getBlue() << "\n";
+}
+
+char* RayCaster::byteDecompose(byte num){
+	byte number = num;
+	char toReturn[3];
+	for (int i = 0; i < 3; ++i){
+		int place = number / (100 / pow(10, i));
+		toReturn[i] = (char)(place + (int)'0');
+		number -= place * (100 / pow(10, i));
+	}
+	return toReturn;
 }
 
 Color RayCaster::castRay(Intersection* hitPointMem){
