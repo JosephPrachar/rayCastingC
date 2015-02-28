@@ -44,10 +44,14 @@ Color& Color::operator+(const Color& rhs){
 	this->blue += rhs.blue;
 	return *this;
 }
-//Color& Color::operator*(const Color& rhs){
-//	this->red *= rhs.red;
-//	this->green *= rhs.green;
-//	this->blue *= rhs.blue;
-//	return *this;
-//}
+Color& Color::operator*(const Color& rhs){
+	this->red *= rhs.red;
+	this->green *= rhs.green;
+	this->blue *= rhs.blue;
+	return *this;
+}
 
+void Color::scaleForPrinting(){
+	this->capValue();
+	this->scale(Color::MAX_VALUE);
+}

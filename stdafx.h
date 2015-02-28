@@ -9,6 +9,15 @@
 
 #include <stdio.h>
 #include <tchar.h>
+#include <math.h>
+#include <array>
+
+#include <iostream>
+#include <fstream>
+
+#include "LinkedListNode.h"
+#include "LinkedList.h"
+
 #include "Utility.h"
 #include "Vector.h"
 #include "Point.h"
@@ -16,7 +25,12 @@
 #include "Color.h"
 #include "Finish.h"
 #include "Sphere.h"
+#include "Intersection.h"
 #include "Light.h"
+#include "Window.h"
+
+#include "RayCaster.h"
+
 
 
 

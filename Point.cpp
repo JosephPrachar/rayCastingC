@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "Vector.h"
 
 Point::Point(float x, float y, float z){
 	this->x = x;
@@ -21,6 +20,12 @@ void Point::translate(Vector toAdd){
 	this->x += toAdd.getX();
 	this->y += toAdd.getY();
 	this->z += toAdd.getZ();
+}
+Point Point::copy(){
+	return Point(this->x, this->y, this->z);
+}
+Vector Point::vectorFromTo(Point from, Point to){
+	return Vector(to.x - from.x, to.y - from.y, to.z - from.z);
 }
 
 bool Point::operator==(Point& rhs){

@@ -13,6 +13,9 @@ public:
 	bool operator!=(Point& rhs);
 
 	void translate(Vector toAdd);
+	Point copy();
+	static Vector vectorFromTo(Point from, Point to);
+
 private:
 	float x;
 	float y;

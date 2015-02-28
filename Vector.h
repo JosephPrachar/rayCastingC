@@ -17,6 +17,7 @@ public:
 	void scale(float scalar);
 	float dotWith(Vector other);
 	void subtract(Vector toSubtract);
+	Vector copy();
 
 private:
 	float x;

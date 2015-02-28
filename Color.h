@@ -14,7 +14,7 @@ public:
 	bool operator==(Color& rhs);
 	bool operator!=(Color& rhs);
 	Color& operator +(const Color& rhs);
-	//Color& operator *(const Color& rhs);
+	Color& operator *(const Color& rhs);
 
 	void scale(float value);
 	void scaleForPrinting();
@@ -25,3 +25,4 @@ private:
 
 	void capValue();
 };
+

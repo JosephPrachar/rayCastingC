@@ -1,4 +1,3 @@
-#pragma once
 #include "stdafx.h"
 
 Vector::Vector(float x, float y, float z){
@@ -30,14 +29,22 @@ bool Vector::operator!=(Vector& rhs){
 }
 
 void Vector::normalize(){
-	return;
+	float factor = 1.0f / this->mLength;
+	this->scale(factor);
 }
 void Vector::scale(float scalar){
-	return;
+	this->x *= scalar;
+	this->y *= scalar;
+	this->z *= scalar;
 }
 float Vector::dotWith(Vector other){
-	return -1;
+	return (this->x * other.x) + (this->y * other.y) + (this->z * other.z);
 }
 void Vector::subtract(Vector toSubtract){
-	return;
+	this->x -= toSubtract.x;
+	this->y -= toSubtract.y;
+	this->z -= toSubtract.z;
+}
+Vector Vector::copy(){
+	return Vector(this->x, this->y, this->z);
 }
