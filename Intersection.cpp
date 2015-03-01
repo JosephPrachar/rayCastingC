@@ -11,3 +11,7 @@ Intersection::Intersection():
 	mPoint(0,0,0)
 {
 }
+
+Intersection Intersection::copy(){
+	return Intersection(mSphere.copy(), mPoint.copy());
+}

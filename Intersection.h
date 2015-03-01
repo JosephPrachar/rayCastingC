@@ -8,4 +8,6 @@ public:
 
 	Sphere mSphere;
 	Point mPoint;
+
+	Intersection copy();
 };

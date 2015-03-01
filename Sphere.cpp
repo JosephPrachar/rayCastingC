@@ -33,7 +33,7 @@ bool Sphere::operator!=(Sphere& rhs){
 
 Point Sphere::rayIntersection(Ray toIntersect, bool* hitsSphere){
 	float a = toIntersect.getDirection().dotWith(toIntersect.getDirection());
-	Vector sphereToRay = Point::vectorFromTo(this->mCenter, toIntersect.getPoint());
+	Vector sphereToRay = Point::vectorFromTo(toIntersect.getPoint(), this->mCenter);
 	float b = 2 * toIntersect.getDirection().dotWith(sphereToRay);
 	float c = sphereToRay.dotWith(sphereToRay) - pow(this->mRadius, 2);
 
@@ -42,6 +42,7 @@ Point Sphere::rayIntersection(Ray toIntersect, bool* hitsSphere){
 		*hitsSphere = false;
 		return Point(0,0,0);
 	}
+	
 
 	float root = sqrt(dis);
 
@@ -71,4 +72,8 @@ Vector Sphere::normalAtPoint(Point pt){
 	Vector toReturn = Point::vectorFromTo(this->mCenter, pt);
 	toReturn.normalize();
 	return toReturn;
+}
+
+Sphere Sphere::copy(){
+	return Sphere(mCenter.copy(), mRadius, mColor.copy(), mFinish.copy());
 }

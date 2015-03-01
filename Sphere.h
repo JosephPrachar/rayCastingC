@@ -15,6 +15,8 @@ public:
 
 	Point rayIntersection(Ray toIntersect, bool* hitsSphere);
 	Vector normalAtPoint(Point pt);
+
+	Sphere copy();
 private:
 	Point mCenter;
 	float mRadius;

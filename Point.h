@@ -14,8 +14,10 @@ public:
 
 	void translate(Vector toAdd);
 	Point copy();
-	static Vector vectorFromTo(Point from, Point to);
+	float distance(Point other);
+	float distanceSquared(Point other);
 
+	static Vector vectorFromTo(Point from, Point to);
 private:
 	float x;
 	float y;

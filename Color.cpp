@@ -38,20 +38,37 @@ bool Color::operator==(Color& rhs){
 bool Color::operator!=(Color& rhs){
 	return !(*this == rhs);
 }
-Color& Color::operator+(const Color& rhs){
-	this->red += rhs.red;
-	this->green += rhs.green;
-	this->blue += rhs.blue;
-	return *this;
-}
-Color& Color::operator*(const Color& rhs){
-	this->red *= rhs.red;
-	this->green *= rhs.green;
-	this->blue *= rhs.blue;
-	return *this;
-}
+//Color& Color::operator+(const Color& rhs){
+//	this->red += rhs.red;
+//	this->green += rhs.green;
+//	this->blue += rhs.blue;
+//	return *this;
+//}
+//Color& Color::operator*(const Color& rhs){
+//	this->red *= rhs.red;
+//	this->green *= rhs.green;
+//	this->blue *= rhs.blue;
+//	return *this;
+//}
 
 void Color::scaleForPrinting(){
 	this->capValue();
 	this->scale(Color::MAX_VALUE);
+	this->red = (int)red;
+	this->green = (int)green;
+	this->blue = (int)blue;
+}
+
+void Color::multiply(Color toMult){
+	this->red *= toMult.red;
+	this->green *= toMult.green;
+	this->blue *= toMult.blue;
+}
+void Color::add(Color toAdd){
+	this->red += toAdd.red;
+	this->green += toAdd.green;
+	this->blue += toAdd.blue;
+}
+Color Color::copy(){
+	return Color(this->red, this->green, this->blue);
 }

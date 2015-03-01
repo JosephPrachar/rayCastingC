@@ -13,11 +13,14 @@ public:
 
 	bool operator==(Color& rhs);
 	bool operator!=(Color& rhs);
-	Color& operator +(const Color& rhs);
-	Color& operator *(const Color& rhs);
+	//Color& operator +(const Color& rhs);
+	//Color& operator *(const Color& rhs);
 
 	void scale(float value);
 	void scaleForPrinting();
+	void multiply(Color toMult);
+	void add(Color toAdd);
+	Color copy();
 private:
 	float red;
 	float green;

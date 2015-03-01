@@ -24,6 +24,13 @@ void Point::translate(Vector toAdd){
 Point Point::copy(){
 	return Point(this->x, this->y, this->z);
 }
+float Point::distance(Point other){
+	return sqrt(this->distanceSquared(other));
+}
+float Point::distanceSquared(Point other){
+	return pow(other.x - this->x, 2) + pow(other.y - this->y, 2) + pow(other.z - this->z, 2);
+}
+
 Vector Point::vectorFromTo(Point from, Point to){
 	return Vector(to.x - from.x, to.y - from.y, to.z - from.z);
 }

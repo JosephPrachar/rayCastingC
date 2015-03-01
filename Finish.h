@@ -13,6 +13,8 @@ public:
 	bool operator==(Finish& rhs);
 	bool operator!=(Finish& rhs);
 
+	Finish copy();
+
 private:
 	float mAmbient;
 	float mDiffuse;

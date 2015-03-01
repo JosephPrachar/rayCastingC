@@ -29,3 +29,7 @@ bool Finish::operator==(Finish& rhs){
 bool operator!=(Finish& lhs, Finish& rhs){
 	return !(lhs == rhs);
 }
+
+Finish Finish::copy(){
+	return Finish(mAmbient, mDiffuse, mSpecular, mRough);
+}

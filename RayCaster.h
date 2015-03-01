@@ -1,6 +1,5 @@
 #pragma once
 #include "stdafx.h"
-using namespace std;
 
 class RayCaster{
 public:
@@ -23,9 +22,11 @@ private:
 	int findIntersectionPoints(Ray ray, Intersection* lengthOfArray);
 
 	Color computeAmbientLight(Sphere sphere);
-	Color computePointAndSpecular(Point intersect, Sphere sphere);
+	Color computePointAndSpecular(Intersection intersect, Intersection* hitPointMem);
 
 	void advanceCastPoint();
 	void printPicture(ofstream* outputFile, byte* pic);
-	char* byteDecompose(byte num);
+	void byteDecompose(byte num, char* toFill);
+
+	int shortestDistFromPoint(Point source, Intersection* hitPoints, int length);
 };
