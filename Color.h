@@ -7,14 +7,9 @@ public:
 
 	static const int MAX_VALUE = 255;
 
-	float getRed();
-	float getGreen();
-	float getBlue();
-
-	bool operator==(Color& rhs);
-	bool operator!=(Color& rhs);
-	//Color& operator +(const Color& rhs);
-	//Color& operator *(const Color& rhs);
+	float getRed() const;
+	float getGreen() const;
+	float getBlue() const;
 
 	void scale(float value);
 	void scaleForPrinting();
@@ -29,3 +24,13 @@ private:
 	void capValue();
 };
 
+inline bool operator==(const Color& lhs, const Color& rhs){
+	return eEqual(lhs.getRed(),rhs.getRed()) &&
+		eEqual(lhs.getGreen(), rhs.getGreen()) &&
+		eEqual(lhs.getBlue(), rhs.getBlue());
+}
+inline bool operator!=(const Color& lhs, const Color& rhs){
+	return !(lhs == rhs);
+}
+
+std::wstringstream& operator<<(std::wstringstream& os, const Color& obj);

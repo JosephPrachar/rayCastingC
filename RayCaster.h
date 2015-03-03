@@ -28,5 +28,5 @@ private:
 	void printPicture(ofstream* outputFile, byte* pic);
 	void byteDecompose(byte num, char* toFill);
 
-	int shortestDistFromPoint(Point source, Intersection* hitPoints, int length);
+	int shortestDistFromPoint(Intersection* hitPoints, int length);
 };

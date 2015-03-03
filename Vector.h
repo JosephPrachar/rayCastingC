@@ -5,13 +5,10 @@ class Vector{
 public:
 	Vector(float x, float y, float z);
 
-	float getX();
-	float getY();
-	float getZ();
-	float getLength();
-
-	bool operator==(Vector& rhs);
-	bool operator!=(Vector& lhs);
+	float getX() const;
+	float getY() const;
+	float getZ() const;
+	float getLength() const;
 
 	void normalize();
 	void scale(float scalar);
@@ -27,3 +24,14 @@ private:
 
 	void updateLength();
 };
+
+inline bool operator==(const Vector& lhs, const Vector& rhs){
+	return eEqual(lhs.getX(), rhs.getX()) &&
+		eEqual(lhs.getY(), rhs.getY()) &&
+		eEqual(lhs.getZ(), rhs.getZ());
+}
+inline bool operator!=(const Vector& lhs, const Vector& rhs){
+	return !(lhs == rhs);
+}
+
+std::wstringstream& operator<<(std::wstringstream& os, const Vector& obj);

@@ -6,13 +6,13 @@ Point::Point(float x, float y, float z){
 	this->z = z;
 }
 
-float Point::getX(){
+float Point::getX() const{
 	return this->x;
 }
-float Point::getY(){
+float Point::getY() const{
 	return this->y;
 }
-float Point::getZ(){
+float Point::getZ() const{
 	return this->z;
 }
 
@@ -34,12 +34,11 @@ float Point::distanceSquared(Point other){
 Vector Point::vectorFromTo(Point from, Point to){
 	return Vector(to.x - from.x, to.y - from.y, to.z - from.z);
 }
-
-bool Point::operator==(Point& rhs){
-	return eEqual(this->x, rhs.x) &&
-		eEqual(this->y, rhs.y) &&
-		eEqual(this->z, rhs.z);
+Vector Point::differenceVector(Point one, Point two){
+	return Point::vectorFromTo(two, one);
 }
-bool Point::operator!=(Point& rhs){
-	return !(*this == rhs);
+
+std::wstringstream& operator<<(std::wstringstream& os, const Point& obj){
+	os << '<' << obj.getX() << ", " << obj.getY() << ", " << obj.getZ() << '>';
+	return os;
 }

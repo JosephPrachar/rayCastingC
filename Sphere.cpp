@@ -8,36 +8,28 @@ Sphere::Sphere(Point center, float radius, Color color, Finish finish):
 	this->mRadius = radius;
 }
 
-Point Sphere::getCenter(){
+Point Sphere::getCenter() const{
 	return this->mCenter;
 }
-float Sphere::getRadius(){
+float Sphere::getRadius() const{
 	return this->mRadius;
 }
-Color Sphere::getColor(){
+Color Sphere::getColor() const{
 	return this->mColor;
 }
-Finish Sphere::getFinish(){
+Finish Sphere::getFinish() const{
 	return this->mFinish;
-}
-
-bool Sphere::operator==(Sphere& rhs){
-	return (this->mCenter == rhs.mCenter) &&
-		eEqual(this->mRadius, rhs.mRadius) &&
-		(this->mColor == rhs.mColor) &&
-		(this->mFinish == rhs.mFinish);
-}
-bool Sphere::operator!=(Sphere& rhs){
-	return !(*this == rhs);
 }
 
 Point Sphere::rayIntersection(Ray toIntersect, bool* hitsSphere){
 	float a = toIntersect.getDirection().dotWith(toIntersect.getDirection());
-	Vector sphereToRay = Point::vectorFromTo(toIntersect.getPoint(), this->mCenter);
+	Vector sphereToRay = Point::differenceVector(toIntersect.getPoint(), this->mCenter);
 	float b = 2 * toIntersect.getDirection().dotWith(sphereToRay);
 	float c = sphereToRay.dotWith(sphereToRay) - pow(this->mRadius, 2);
 
+
 	float dis = pow(b, 2) - 4 * a * c;
+
 	if (dis < 0){
 		*hitsSphere = false;
 		return Point(0,0,0);
@@ -76,4 +68,9 @@ Vector Sphere::normalAtPoint(Point pt){
 
 Sphere Sphere::copy(){
 	return Sphere(mCenter.copy(), mRadius, mColor.copy(), mFinish.copy());
+}
+
+std::wstringstream& operator<<(std::wstringstream& os, const Sphere& obj){
+	os << '(' << &obj.getCenter() << ', ' << obj.getRadius() << ', ' << &obj.getColor() << ', ' << &obj.getFinish() << ')';
+	return os;
 }

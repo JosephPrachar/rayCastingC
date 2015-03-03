@@ -13,6 +13,8 @@ typedef unsigned char byte;
 #include <tchar.h>
 #include <math.h>
 #include <array>
+#include <sstream>
+#include <string>
 
 #include <iostream>
 #include <fstream>

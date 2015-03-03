@@ -6,13 +6,13 @@ Color::Color(float red, float green, float blue){
 	this->blue = blue;
 }
 
-float Color::getRed(){
+float Color::getRed() const{
 	return this->red;
 }
-float Color::getGreen(){
+float Color::getGreen() const{
 	return this->green;
 }
-float Color::getBlue(){
+float Color::getBlue() const{
 	return this->blue;
 }
 
@@ -29,27 +29,6 @@ void Color::capValue(){
 	if (this->blue > 1)
 		this->blue = 1;
 }
-
-bool Color::operator==(Color& rhs){
-	return eEqual(this->red, rhs.red) &&
-		eEqual(this->green, rhs.green) &&
-		eEqual(this->blue, rhs.blue);
-}
-bool Color::operator!=(Color& rhs){
-	return !(*this == rhs);
-}
-//Color& Color::operator+(const Color& rhs){
-//	this->red += rhs.red;
-//	this->green += rhs.green;
-//	this->blue += rhs.blue;
-//	return *this;
-//}
-//Color& Color::operator*(const Color& rhs){
-//	this->red *= rhs.red;
-//	this->green *= rhs.green;
-//	this->blue *= rhs.blue;
-//	return *this;
-//}
 
 void Color::scaleForPrinting(){
 	this->capValue();
@@ -71,4 +50,9 @@ void Color::add(Color toAdd){
 }
 Color Color::copy(){
 	return Color(this->red, this->green, this->blue);
+}
+
+std::wstringstream& operator<<(std::wstringstream& os, const Color& obj){
+	os << '<' << obj.getRed() << ", " << obj.getGreen() << ", " << obj.getBlue() << '>';
+	return os;
 }

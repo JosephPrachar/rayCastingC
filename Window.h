@@ -17,3 +17,5 @@ public:
 	int width;
 	int height;
 };
+
+std::wstringstream& operator<<(std::wstringstream& os, const Window& obj);

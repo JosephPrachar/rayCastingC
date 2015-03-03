@@ -6,17 +6,14 @@ Ray::Ray(Point pt, Vector dir):
 {
 }
 
-Point Ray::getPoint(){
+Point Ray::getPoint() const{
 	return this->mPoint;
 }
-Vector Ray::getDirection(){
+Vector Ray::getDirection() const{
 	return this->mDir;
 }
 
-bool Ray::operator==(Ray& rhs){
-	return (this->mDir == rhs.mDir) &&
-		(this->mPoint == rhs.mPoint);
-}
-bool Ray::operator!=(Ray& rhs){
-	return !(*this == rhs);
+std::wstringstream& operator<<(std::wstringstream& os, const Ray& obj){
+	os << '(' << &obj.getPoint() << ', ' << &obj.getDirection() << ')';
+	return os;
 }

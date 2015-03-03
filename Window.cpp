@@ -11,3 +11,8 @@ Window::Window(float x_min, float x_max, float y_min, float y_max, int width, in
 	this->delta_x = (x_max - x_min) / float(width);
 	this->delta_y = (y_max - y_min) / float(height);
 }
+
+std::wstringstream& operator<<(std::wstringstream& os, const Window& obj){
+	os << '<' << obj.x_min << ", " << obj.x_max << ", " << obj.y_min << ", " << obj.y_max << ", " << obj.width << ", " << obj.height << '>'; 
+	return os;
+}

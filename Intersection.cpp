@@ -15,3 +15,8 @@ Intersection::Intersection():
 Intersection Intersection::copy(){
 	return Intersection(mSphere.copy(), mPoint.copy());
 }
+
+std::wstringstream& operator<<(std::wstringstream& os, const Intersection& obj){
+	os << '{' << &obj.mSphere << ', ' << &obj.mPoint << '}';
+	return os;
+}

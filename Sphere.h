@@ -5,13 +5,10 @@ class Sphere {
 public:
 	Sphere(Point center, float radius, Color color, Finish finish);
 
-	Point getCenter();
-	float getRadius();
-	Color getColor();
-	Finish getFinish();
-
-	bool operator==(Sphere& rhs);
-	bool operator!=(Sphere& rhs);
+	Point getCenter() const;
+	float getRadius() const;
+	Color getColor() const;
+	Finish getFinish() const;
 
 	Point rayIntersection(Ray toIntersect, bool* hitsSphere);
 	Vector normalAtPoint(Point pt);
@@ -23,3 +20,15 @@ private:
 	Color mColor;
 	Finish mFinish;
 };
+
+inline bool operator==(const Sphere& lhs, const Sphere& rhs){
+	return lhs.getCenter() == rhs.getCenter() &&
+		eEqual(lhs.getRadius(), rhs.getRadius()) &&
+		lhs.getColor() == rhs.getColor() &&
+		lhs.getFinish() == rhs.getFinish();
+}
+inline bool operator!=(const Sphere& lhs, const Sphere& rhs){
+	return !(lhs == rhs);
+}
+
+std::wstringstream& operator<<(std::wstringstream& os, const Sphere& obj);

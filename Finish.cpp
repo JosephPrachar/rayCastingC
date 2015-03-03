@@ -7,29 +7,24 @@ Finish::Finish(float ambient, float diffuse, float specular, float roughness){
 	this->mRough = roughness;	
 }
 
-float Finish::getAmbient(){
+float Finish::getAmbient() const{
 	return this->mAmbient;
 }
-float Finish::getDiffuse(){
+float Finish::getDiffuse() const{
 	return this->mDiffuse;
 }
-float Finish::getSpecular(){
+float Finish::getSpecular() const{
 	return this->mSpecular;
 }
-float Finish::getRoughness(){
+float Finish::getRoughness() const{
 	return this->mRough;
-}
-
-bool Finish::operator==(Finish& rhs){
-	return eEqual(this->mAmbient, rhs.mAmbient) &&
-		eEqual(this->mDiffuse, rhs.mDiffuse) &&
-		eEqual(this->mRough, rhs.mRough) &&
-		eEqual(this->mSpecular, rhs.mSpecular);
-}
-bool operator!=(Finish& lhs, Finish& rhs){
-	return !(lhs == rhs);
 }
 
 Finish Finish::copy(){
 	return Finish(mAmbient, mDiffuse, mSpecular, mRough);
+}
+
+std::wstringstream& operator<<(std::wstringstream& os, const Finish& obj){
+	os << '<' << obj.getAmbient() << ", " << obj.getDiffuse() << ", " << obj.getSpecular() << ', ' << obj.getRoughness() << '>';
+	return os;
 }

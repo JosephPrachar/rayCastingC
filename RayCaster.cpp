@@ -18,6 +18,10 @@ void RayCaster::castAllRays(ofstream* outputFile){
 	long size = mView.width * mView.height * 3;
 	byte* picture = new byte[size];
 	Intersection* hitPointMem = new Intersection[this->mListLength];
+	if (hitPointMem == NULL || picture == NULL)
+	{
+		exit(1);
+	}
 
 	long count = 0;
 
@@ -74,12 +78,16 @@ Color RayCaster::castRay(Intersection* hitPointMem){
 
 	Point pt = Point(curX, curY, 0);
 	Vector v = Point::vectorFromTo(this->mEye, pt);
-	Ray ray = Ray(pt, v);
+	//Vector v = Point::vectorFromTo(this->mEye, this->mSphereList[1].getCenter());
+	Ray ray = Ray(this->mEye, v);
 	
 	int length = this->findIntersectionPoints(ray, hitPointMem);
 
 	if (length != 0){
-		int iSmall = this->shortestDistFromPoint(pt, hitPointMem, length);
+		int iSmall = 0;
+		if (length > 1){
+			iSmall = this->shortestDistFromPoint(hitPointMem, length);
+		}
 		Intersection intersect = hitPointMem[iSmall].copy();	// extract intersection that matters so that hitPointsMem can be reused in specular color computation
 
 		Color ambientColorAddition = this->computeAmbientLight(intersect.mSphere);
@@ -92,13 +100,13 @@ Color RayCaster::castRay(Intersection* hitPointMem){
 	return toReturn;
 }
 
-int RayCaster::shortestDistFromPoint(Point source, Intersection* hitPoints, int length){
+int RayCaster::shortestDistFromPoint(Intersection* hitPoints, int length){
 	int iSmall = 0;
-	float distSmall = source.distance(hitPoints[0].mPoint);
+	float distSmall = this->mEye.distance(hitPoints[0].mPoint);
 
-	for (int i = 0; i < length; ++i){
-		float cur = source.distance(hitPoints[i].mPoint);
-		if (cur > distSmall){
+	for (int i = 1; i < length; ++i){
+		float cur = this->mEye.distance(hitPoints[i].mPoint);
+		if (cur < distSmall){
 			iSmall = i;
 			distSmall = cur;
 		}
@@ -180,7 +188,7 @@ Color RayCaster::computePointAndSpecular(Intersection intersect, Intersection* h
 		specColor.scale(scale);
 	}
 
-	//pointColor.add(specColor);
+	pointColor.add(specColor);
 	return pointColor;
 }
 
