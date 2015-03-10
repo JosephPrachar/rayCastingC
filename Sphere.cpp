@@ -7,6 +7,13 @@ Sphere::Sphere(Point center, float radius, Color color, Finish finish):
 {
 	this->mRadius = radius;
 }
+Sphere::Sphere():
+	mCenter(0,0,0),
+	mColor(0,0,0),
+	mFinish(0,0,0,0)
+{
+	this->mRadius = 0;
+}
 
 Point Sphere::getCenter() const{
 	return this->mCenter;

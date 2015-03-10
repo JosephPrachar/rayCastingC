@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
 
-class RayCaster{
+class RayCaster {
 public:
 	RayCaster(Window view, Point eyePoint, Sphere* sphereList, int listLength, Color ambientColor, Light pointLight);
 
@@ -19,7 +19,7 @@ private:
 	Color mAmbient;
 	Light mPointLight;
 	
-	int findIntersectionPoints(Ray ray, Intersection* lengthOfArray);
+	int findIntersectionPoints(Ray ray, Intersection* hitPointMem);
 
 	Color computeAmbientLight(Sphere sphere);
 	Color computePointAndSpecular(Intersection intersect, Intersection* hitPointMem);

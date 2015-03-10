@@ -8,7 +8,7 @@ public:
 	float getX() const;
 	float getY() const;
 	float getZ() const;
-	float getLength() const;
+	float getLength();
 
 	void normalize();
 	void scale(float scalar);

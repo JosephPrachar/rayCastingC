@@ -4,6 +4,7 @@
 class Sphere {
 public:
 	Sphere(Point center, float radius, Color color, Finish finish);
+	Sphere();
 
 	Point getCenter() const;
 	float getRadius() const;

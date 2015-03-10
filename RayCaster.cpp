@@ -1,5 +1,4 @@
 #include "stdafx.h"
-using namespace std;
 
 RayCaster::RayCaster(Window view, Point eyePoint, Sphere* sphereList, int listLength, Color ambientColor, Light pointLight):
 	mView(view),
@@ -24,6 +23,7 @@ void RayCaster::castAllRays(ofstream* outputFile){
 	}
 
 	long count = 0;
+	float percent = .02f;
 
 	while (count < size){
 		Color result = this->castRay(hitPointMem);
@@ -37,7 +37,15 @@ void RayCaster::castAllRays(ofstream* outputFile){
 		count++;
 
 		this->advanceCastPoint();
+
+		if (count % 1000 == 0 || count % 1000 == 1 || count & 1000 == 2){
+			if ((float)count / (float)size > percent){
+				std::cout << '=';
+				percent += .02;
+			}
+		}
 	}
+	std::cout << "Done Computing";
 
 	this->printPicture(outputFile, picture);
 
@@ -51,9 +59,8 @@ void RayCaster::printPicture(ofstream* outputFile, byte* pic){
 
 	long pos = 0;
 	for (int i = 0; i < size; ++i){
-		char nums[3];
-		this->byteDecompose(pic[i], nums);
-		for (int j = 0; j < 3; ++j){
+		std::string nums = std::to_string((int)pic[i]);
+		for (int j = 0; j < nums.length(); ++j){
 			buffer[pos] = nums[j];
 			pos++;
 		}
@@ -78,7 +85,6 @@ Color RayCaster::castRay(Intersection* hitPointMem){
 
 	Point pt = Point(curX, curY, 0);
 	Vector v = Point::vectorFromTo(this->mEye, pt);
-	//Vector v = Point::vectorFromTo(this->mEye, this->mSphereList[1].getCenter());
 	Ray ray = Ray(this->mEye, v);
 	
 	int length = this->findIntersectionPoints(ray, hitPointMem);
@@ -123,10 +129,8 @@ int RayCaster::findIntersectionPoints(Ray ray, Intersection* hitPointMem){
 		if (hit == true){
 			hitPointMem[count] = Intersection(this->mSphereList[i], pt);
 			count++;
-		}
-		
+		}		
 	}
-
 	return count;
 }
 
@@ -190,6 +194,7 @@ Color RayCaster::computePointAndSpecular(Intersection intersect, Intersection* h
 
 	pointColor.add(specColor);
 	return pointColor;
+	//return specColor;
 }
 
 void RayCaster::advanceCastPoint(){
