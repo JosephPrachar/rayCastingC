@@ -29,6 +29,8 @@ Finish Sphere::getFinish() const{
 }
 
 Point Sphere::rayIntersection(Ray toIntersect, bool* hitsSphere){
+	// math
+
 	float a = toIntersect.getDirection().dotWith(toIntersect.getDirection());
 	Vector sphereToRay = Point::differenceVector(toIntersect.getPoint(), this->mCenter);
 	float b = 2 * toIntersect.getDirection().dotWith(sphereToRay);

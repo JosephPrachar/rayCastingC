@@ -8,6 +8,7 @@ public:
 	Color castRay(Intersection* hitPointMem);
 	void castAllRays(ofstream* outputFile); // pass some sort of file stream
 
+	double computeTime;
 private:
 	float curX;
 	float curY;

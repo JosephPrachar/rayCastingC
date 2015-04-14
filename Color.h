@@ -33,4 +33,5 @@ inline bool operator!=(const Color& lhs, const Color& rhs){
 	return !(lhs == rhs);
 }
 
+// For unit testing
 std::wstringstream& operator<<(std::wstringstream& os, const Color& obj);

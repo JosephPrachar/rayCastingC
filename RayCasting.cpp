@@ -9,6 +9,7 @@ void printHeader(ofstream* myFile, int width, int height);
 void readSetupFile(std::string file, Window* view, Point* eye, Color* ambient, Light* light);
 Sphere* readSphereFile(std::string file, int* length);
 
+// I have a feeling that most of these functions should be placed in another file, just not sure where to put them
 Sphere parseSphere(std::string line, bool* good);
 Window parseWindow(std::string line, bool* good);
 Point parsePoint(std::string line, bool* good);
@@ -19,20 +20,29 @@ vector<float> parseFloats(std::string line, int expected);
 std::vector<std::string> split(const std::string &s, char delim);
 std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems);
 
-int _tmain(int argc, _TCHAR* argv[])
+int main(int argc, char* argv[])
+	// two cmd line arguments are setup file and sphere list file
 {
+	std::clock_t start;
+	double inputFile,outputFile;
+	start = std::clock();
+
+	// set empty objects (all inputs should be in setup.in)
 	Window view = Window(0,0,0,0,0,0);
 	Point eye = Point(0,0,0);
 	Color ambientColor = Color(0,0,0);
 	Light pointLight = Light(Point(0,0,0), Color(0,0,0));
 
-	readSetupFile("setup.in", &view, &eye, &ambientColor, &pointLight);
+	readSetupFile(std::string(argv[1]), &view, &eye, &ambientColor, &pointLight);
 	
 	int length = 0;
-	Sphere* spheres = readSphereFile("input.in", &length);
+	Sphere* spheres = readSphereFile(std::string(argv[2]), &length);
+
+	inputFile = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
 	RayCaster rc = RayCaster(view, eye, spheres, length, ambientColor, pointLight);
 
+	// todo: handle possible errors
 	ofstream myFile;
 	myFile.open("image.ppm");
 
@@ -40,6 +50,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	rc.castAllRays(&myFile);
 
 	myFile.close();
+
+	outputFile = ((std::clock() - start)/(double) CLOCKS_PER_SEC) - inputFile - rc.computeTime;
+
+	cout << "\nInput File IO: " << inputFile << "\nCompute Time: " << rc.computeTime << "\nOutput File IO: " << outputFile << endl;
 }
 
 void printHeader(std::ofstream* myFile, int width, int height){
@@ -49,6 +63,8 @@ void printHeader(std::ofstream* myFile, int width, int height){
 }
 
 void readSetupFile(std::string file, Window* view, Point* eye, Color* ambient, Light* light){
+	// todo: check if successful input on each line
+	
 	string line;
 	bool good = true;
 

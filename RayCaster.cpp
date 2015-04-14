@@ -11,17 +11,27 @@ RayCaster::RayCaster(Window view, Point eyePoint, Sphere* sphereList, int listLe
 
 	this->curX = mView.x_min;
 	this->curY = mView.y_max;
+
+	this->computeTime = -1;
 }
 
 void RayCaster::castAllRays(ofstream* outputFile){
+	std::clock_t start;
+	start = std::clock();
+
+	// calculate total size of buffer
 	long size = mView.width * mView.height * 3;
+	// allocate buffer
 	byte* picture = new byte[size];
+	// allocate memory for findIntersectionPoints
 	Intersection* hitPointMem = new Intersection[this->mListLength];
-	if (hitPointMem == NULL || picture == NULL)
-	{
+
+	// check for valid memory allocation
+	if (hitPointMem == NULL || picture == NULL){
 		exit(1);
 	}
 
+	// for the console 'progress bar'
 	long count = 0;
 	float percent = .02f;
 
@@ -29,6 +39,7 @@ void RayCaster::castAllRays(ofstream* outputFile){
 		Color result = this->castRay(hitPointMem);
 		result.scaleForPrinting();
 
+		// fill buffer with current pixel info
 		picture[count] = (byte)result.getRed();
 		count++;
 		picture[count] = (byte)result.getGreen();
@@ -38,6 +49,7 @@ void RayCaster::castAllRays(ofstream* outputFile){
 
 		this->advanceCastPoint();
 
+		// for the console 'progress bar'
 		if (count % 1000 == 0 || count % 1000 == 1 || count & 1000 == 2){
 			if ((float)count / (float)size > percent){
 				std::cout << '=';
@@ -45,21 +57,30 @@ void RayCaster::castAllRays(ofstream* outputFile){
 			}
 		}
 	}
+
+	this->computeTime = (std::clock() - start)/(double)CLOCKS_PER_SEC;
+
 	std::cout << "Done Computing";
 
+	// output buffer to file
 	this->printPicture(outputFile, picture);
 
+	// free memory
 	delete[] hitPointMem;
 	delete[] picture;
 }
 
 void RayCaster::printPicture(ofstream* outputFile, byte* pic){
-	long size = mView.width * mView.height * 3;	
+	long size = mView.width * mView.height * 3;
+	// maximum size of buffer if all rgb color components are 4 chars "255 "
 	char* buffer = new char[size * 4];
 
+	// keep track of current writing position
 	long pos = 0;
 	for (int i = 0; i < size; ++i){
+		// convert from numerical value to string
 		std::string nums = std::to_string((int)pic[i]);
+		// transfer to 'buffer'
 		for (int j = 0; j < nums.length(); ++j){
 			buffer[pos] = nums[j];
 			pos++;
@@ -68,10 +89,16 @@ void RayCaster::printPicture(ofstream* outputFile, byte* pic){
 		pos++;
 
 	}
+
+	// write buffer to outputFile
 	outputFile->write(buffer, pos);
 }
 
 void RayCaster::byteDecompose(byte num, char* toFill){
+	// old method to convert a byte to the string val
+	// I figured that somebody a lot better at c++ wrote std::to_string()
+	// so I switched to the use of that function
+
 	byte number = num;
 	for (int i = 0; i < 3; ++i){
 		int place = number / (100 / pow(10, i));
@@ -81,6 +108,7 @@ void RayCaster::byteDecompose(byte num, char* toFill){
 }
 
 Color RayCaster::castRay(Intersection* hitPointMem){
+
 	Color toReturn = Color(1.0, 1.0, 1.0);
 
 	Point pt = Point(curX, curY, 0);
@@ -89,12 +117,13 @@ Color RayCaster::castRay(Intersection* hitPointMem){
 	
 	int length = this->findIntersectionPoints(ray, hitPointMem);
 
-	if (length != 0){
+	if (length != 0){ // hits a sphere
 		int iSmall = 0;
-		if (length > 1){
+		if (length > 1){ // if length is not greater than 1 no need to find shortest
 			iSmall = this->shortestDistFromPoint(hitPointMem, length);
 		}
-		Intersection intersect = hitPointMem[iSmall].copy();	// extract intersection that matters so that hitPointsMem can be reused in specular color computation
+		// extract closest intersection point so that hitPointsMem can be reused in findIntersectionPoints call by the specular color computation
+		Intersection intersect = hitPointMem[iSmall].copy();		
 
 		Color ambientColorAddition = this->computeAmbientLight(intersect.mSphere);
 		Color pointLighting = computePointAndSpecular(intersect, hitPointMem);
@@ -142,6 +171,8 @@ Color RayCaster::computeAmbientLight(Sphere sphere){
 }
 
 Color RayCaster::computePointAndSpecular(Intersection intersect, Intersection* hitPointMem){
+	// do math...
+
 	Vector normal = intersect.mSphere.normalAtPoint(intersect.mPoint);
 	Vector scaledNormal = normal.copy();
 	scaledNormal.scale(.01);
@@ -194,10 +225,10 @@ Color RayCaster::computePointAndSpecular(Intersection intersect, Intersection* h
 
 	pointColor.add(specColor);
 	return pointColor;
-	//return specColor;
 }
 
 void RayCaster::advanceCastPoint(){
+	// move current point to next pixel
 	this->curX += this->mView.delta_x;
 	if (this->curX >= this->mView.x_max){
 		this->curX = this->mView.x_min;

@@ -15,6 +15,7 @@ typedef unsigned char byte;
 #include <array>
 #include <sstream>
 #include <string>
+#include <ctime>
 
 #include <iostream>
 #include <fstream>
