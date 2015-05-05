@@ -87,6 +87,7 @@
     <ClInclude Include="Point.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RayCaster.h" />
+    <ClInclude Include="Shape.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Intersection.h" />
     <ClInclude Include="stdafx.h" />

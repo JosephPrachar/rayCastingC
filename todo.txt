@@ -1,0 +1,6 @@
+-addition of multiple shape types
+	-square
+	-cube
+	-mainly triangle
+
+-alternate ways to store images
