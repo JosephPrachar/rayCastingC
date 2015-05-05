@@ -107,7 +107,7 @@ Sphere* readSphereFile(std::string file, int* length){
 	*length = list.size();
 	Sphere* toReturn = new Sphere[*length];
 	for (int i = 0; i < *length; ++i){
-		toReturn[i] = list[i].copy();
+		toReturn[i] = *(list[i].copy());
 	}
 	list.~vector();
 

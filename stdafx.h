@@ -29,6 +29,7 @@ typedef unsigned char byte;
 #include "Ray.h"
 #include "Color.h"
 #include "Finish.h"
+#include "Shape.h"
 #include "Sphere.h"
 #include "Intersection.h"
 #include "Light.h"

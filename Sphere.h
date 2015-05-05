@@ -1,25 +1,21 @@
 #pragma once
 #include "stdafx.h"
 
-class Sphere {
+class Sphere : public Shape {
 public:
 	Sphere(Point center, float radius, Color color, Finish finish);
 	Sphere();
 
 	Point getCenter() const;
 	float getRadius() const;
-	Color getColor() const;
-	Finish getFinish() const;
 
 	Point rayIntersection(Ray toIntersect, bool* hitsSphere);
 	Vector normalAtPoint(Point pt);
 
-	Sphere copy();
+	Sphere* copy();
 private:
 	Point mCenter;
 	float mRadius;
-	Color mColor;
-	Finish mFinish;
 };
 
 inline bool operator==(const Sphere& lhs, const Sphere& rhs){

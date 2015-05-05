@@ -3,9 +3,14 @@
 
 class Shape
 {
+protected:
+	Color mColor;
+	Finish mFinish;
 public:
-	virtual Color getColor() const = 0;
-	virtual Finish getFinish() const = 0;
+	Shape(Color color, Finish finish);
+
+	Color getColor() const;
+	Finish getFinish() const;
 
 	virtual Point rayIntersection(Ray toIntersect, bool* hitsSphere) = 0;
 	virtual Vector normalAtPoint(Point pt) = 0;

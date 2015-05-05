@@ -1,16 +1,15 @@
 #include "stdafx.h"
 
 Sphere::Sphere(Point center, float radius, Color color, Finish finish):
-	mCenter(center),
-	mColor(color),
-	mFinish(finish)
+	Shape(color, finish),
+	mCenter(center)
 {
 	this->mRadius = radius;
 }
 Sphere::Sphere():
-	mCenter(0,0,0),
-	mColor(0,0,0),
-	mFinish(0,0,0,0)
+	Shape(Color(0,0,0),
+	Finish(0,0,0,0)),
+	mCenter(0,0,0)
 {
 	this->mRadius = 0;
 }
@@ -21,13 +20,8 @@ Point Sphere::getCenter() const{
 float Sphere::getRadius() const{
 	return this->mRadius;
 }
-Color Sphere::getColor() const{
-	return this->mColor;
-}
-Finish Sphere::getFinish() const{
-	return this->mFinish;
-}
 
+// overrides from shape
 Point Sphere::rayIntersection(Ray toIntersect, bool* hitsSphere){
 	// math
 
@@ -75,8 +69,8 @@ Vector Sphere::normalAtPoint(Point pt){
 	return toReturn;
 }
 
-Sphere Sphere::copy(){
-	return Sphere(mCenter.copy(), mRadius, mColor.copy(), mFinish.copy());
+Sphere* Sphere::copy(){
+	return &Sphere(mCenter.copy(), mRadius, mColor.copy(), mFinish.copy());
 }
 
 std::wstringstream& operator<<(std::wstringstream& os, const Sphere& obj){
