@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
-RayCaster::RayCaster(Window view, Point eyePoint, Sphere* sphereList, int listLength, Color ambientColor, Light pointLight):
+RayCaster::RayCaster(Window view, Point eyePoint, Shape* shapeList, int listLength, Color ambientColor, Light pointLight):
 	mView(view),
 	mEye(eyePoint),
-	mSphereList(sphereList),
+	mShapeList(shapeList),
 	mAmbient(ambientColor),
 	mPointLight(pointLight)
 {
@@ -50,7 +50,7 @@ void RayCaster::castAllRays(ofstream* outputFile){
 		this->advanceCastPoint();
 
 		// for the console 'progress bar'
-		if (count % 1000 == 0 || count % 1000 == 1 || count & 1000 == 2){
+		if (count % 1000 == 0 || count % 1000 == 1 || count % 1000 == 2){
 			if ((float)count / (float)size > percent){
 				std::cout << '=';
 				percent += .02;
@@ -125,7 +125,7 @@ Color RayCaster::castRay(Intersection* hitPointMem){
 		// extract closest intersection point so that hitPointsMem can be reused in findIntersectionPoints call by the specular color computation
 		Intersection intersect = hitPointMem[iSmall].copy();		
 
-		Color ambientColorAddition = this->computeAmbientLight(intersect.mSphere);
+		Color ambientColorAddition = this->computeAmbientLight(intersect.mShape);
 		Color pointLighting = computePointAndSpecular(intersect, hitPointMem);
 		ambientColorAddition.add(pointLighting);
 
@@ -154,26 +154,26 @@ int RayCaster::findIntersectionPoints(Ray ray, Intersection* hitPointMem){
 	int count = 0;
 	for (int i = 0; i < this->mListLength; ++i){
 		bool hit = false;
-		Point pt = this->mSphereList[i].rayIntersection(ray, &hit);
+		Point pt = this->mShapeList[i].rayIntersection(ray, &hit);
 		if (hit == true){
-			hitPointMem[count] = Intersection(this->mSphereList[i], pt);
+			hitPointMem[count] = Intersection(&this->mShapeList[i], pt);
 			count++;
 		}		
 	}
 	return count;
 }
 
-Color RayCaster::computeAmbientLight(Sphere sphere){
-	Color toReturn = sphere.getColor().copy();
+Color RayCaster::computeAmbientLight(Shape* shape){
+	Color toReturn = shape->getColor().copy();
 	toReturn.multiply(this->mAmbient);
-	toReturn.scale(sphere.getFinish().getAmbient());
+	toReturn.scale(shape->getFinish().getAmbient());
 	return toReturn;
 }
 
 Color RayCaster::computePointAndSpecular(Intersection intersect, Intersection* hitPointMem){
 	// do math...
 
-	Vector normal = intersect.mSphere.normalAtPoint(intersect.mPoint);
+	Vector normal = intersect.mShape->normalAtPoint(intersect.mPoint);
 	Vector scaledNormal = normal.copy();
 	scaledNormal.scale(.01);
 
@@ -202,8 +202,8 @@ Color RayCaster::computePointAndSpecular(Intersection intersect, Intersection* h
 		}
 	}
 
-	float dotTimesDiffuse = lDotN * intersect.mSphere.getFinish().getDiffuse();
-	Color pointColor = intersect.mSphere.getColor().copy();
+	float dotTimesDiffuse = lDotN * intersect.mShape->getFinish().getDiffuse();
+	Color pointColor = intersect.mShape->getColor().copy();
 	pointColor.multiply(this->mPointLight.getColor());
 	pointColor.scale(dotTimesDiffuse);
 
@@ -218,7 +218,7 @@ Color RayCaster::computePointAndSpecular(Intersection intersect, Intersection* h
 	float specIntense = reflect.dotWith(vSubDir);
 	Color specColor = Color(0,0,0);
 	if (specIntense > 0){
-		float scale = intersect.mSphere.getFinish().getSpecular() * pow(specIntense, (1.0 / intersect.mSphere.getFinish().getRoughness()));
+		float scale = intersect.mShape->getFinish().getSpecular() * pow(specIntense, (1.0 / intersect.mShape->getFinish().getRoughness()));
 		specColor = this->mPointLight.getColor().copy();
 		specColor.scale(scale);
 	}

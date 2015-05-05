@@ -3,7 +3,7 @@
 
 class RayCaster {
 public:
-	RayCaster(Window view, Point eyePoint, Sphere* sphereList, int listLength, Color ambientColor, Light pointLight);
+	RayCaster(Window view, Point eyePoint, Shape* shapeList, int listLength, Color ambientColor, Light pointLight);
 
 	Color castRay(Intersection* hitPointMem);
 	void castAllRays(ofstream* outputFile); // pass some sort of file stream
@@ -15,14 +15,14 @@ private:
 
 	Window mView;
 	Point mEye;
-	Sphere* mSphereList;
+	Shape* mShapeList;
 	int mListLength;
 	Color mAmbient;
 	Light mPointLight;
 	
 	int findIntersectionPoints(Ray ray, Intersection* hitPointMem);
 
-	Color computeAmbientLight(Sphere sphere);
+	Color computeAmbientLight(Shape* shape);
 	Color computePointAndSpecular(Intersection intersect, Intersection* hitPointMem);
 
 	void advanceCastPoint();
