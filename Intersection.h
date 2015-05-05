@@ -3,10 +3,10 @@
 
 class Intersection{
 public:
-	Intersection(Sphere sphere, Point point);
+	Intersection(Shape* shape, Point point);
 	Intersection();
 
-	Sphere mSphere;
+	Shape* mShape;
 	Point mPoint;
 
 	Intersection copy();
@@ -14,7 +14,7 @@ public:
 
 inline bool operator==(const Intersection& lhs, const Intersection& rhs){
 	return lhs.mPoint == rhs.mPoint &&
-		lhs.mSphere == rhs.mSphere;
+		lhs.mShape == rhs.mShape;
 }
 inline bool operator!=(const Intersection& lhs, const Intersection& rhs){
 	return !(lhs == rhs);
