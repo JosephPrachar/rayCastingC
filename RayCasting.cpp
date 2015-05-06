@@ -30,23 +30,24 @@ int main(int argc, char* argv[])
 	start = std::clock();
 
 	// set empty objects (all inputs should be in setup.in)
-	Window view = Window(-10, 10, -7.5, 7.5, 1024, 768);
+	Window view = Window(-10, 10, -7.5, 7.5, 1024/2, 768/2);
 	Point eye = Point(0, 0, -14);
 	Color ambientColor = Color(1, 1, 1);
-	Light pointLight = Light(Point(-100, 100, -100), Color(1.5, 1.5, 1.5));
-#ifdef _DEBUG
+	//Light pointLight = Light(Point(-100, 100, -100), Color(1.5, 1.5, 1.5));
+	Light pointLight = Light(Point(0, 30, -100), Color(1.5, 1.5, 1.5));
+//#ifdef _DEBUG
 	//readSetupFile("setup.in", &view, &eye, &ambientColor, &pointLight);
-#else
-	readSetupFile(std::string(argv[1]), &view, &eye, &ambientColor, &pointLight);
-#endif
+//#else
+	//readSetupFile(std::string(argv[1]), &view, &eye, &ambientColor, &pointLight);
+//#endif
 	
 	int length = 0;
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	Shape** shapes = readSphereFile("input1.in", &length);
-#else
-	Shape** shapes = readSphereFile(std::string(argv[2]), &length);
-#endif
+//#else
+//	Shape** shapes = readSphereFile(std::string(argv[2]), &length);
+//#endif
 
 	inputFile = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
@@ -98,26 +99,30 @@ void readSetupFile(std::string file, Window* view, Point* eye, Color* ambient, L
 }
 Shape** readSphereFile(std::string file, int* length){
 	std::vector<Shape*> list;
-	std::string line;
+	//std::string line;
 
-	std::ifstream f(file);
-	int count = 0;
-	if (f.is_open()){
-		while(getline(f, line)){
-			bool good = false;
-			Shape* temp = &parseSphere(line, &good);
+	//std::ifstream f(file);
+	//int count = 0;
+	//if (f.is_open()){
+	//	while(getline(f, line)){
+	//		bool good = false;
+	//		//Triangle* temp = &parseSphere(line, &good);
 
-			if (good == true){
-				list.push_back(temp);
-			}
-		}
-		f.close();
-	}
-#ifdef _DEBUG
+	//		//if (good == true){
+	//		//	list.push_back(temp);
+	//		}
+	//	}
+	//	f.close();
+	//}
+//#ifdef _DEBUG
 	list = std::vector<Shape*>();
-	list.push_back(&Sphere(Point(1, 1, 0), 2, Color(1, 0, 1), Finish(.2, .4, .5, .05)));
+
+	list.push_back(&Triangle(Color(0,0,1), Finish(.2, .4, .5, .05), Point(0,0,0), Point(1,0,-2), Point(0,1,-1)));
+	list.push_back(&Triangle(Color(1,0,0), Finish(.2, .4, .5, .05), Point(4,4,0), Point(4,0,-10), Point(0,4,-10)));
+	list.push_back(&Triangle(Color(0,1,0), Finish(.2, .4, .5, .05), Point(1,2,0), Point(-1,0,0), Point(0,-1,0)));
+	list.push_back(&Sphere(Point(-1, 1, 5), 2, Color(1, 0, 1), Finish(.2, .4, .5, .05)));
 	list.push_back(&Sphere(Point(8, -10, 110), 100, Color(.2, .2, .6), Finish(.4, .8, 0, .05)));
-#endif
+//#endif
 	*length = list.size();
 	Shape** toReturn = new Shape*[*length];
 	for (int i = 0; i < *length; ++i){

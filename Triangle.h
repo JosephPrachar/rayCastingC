@@ -2,7 +2,8 @@
 #include "shape.h"
 class Triangle : public Shape {
 public:
-	Triangle(Point points[3], Color color, Finish finish);
+	//Triangle(Point points[3], Color color, Finish finish);
+	Triangle(Color color, Finish finish, Point one, Point two, Point three);
 	Triangle();
 
 	Point* getPoints() const;
@@ -13,7 +14,9 @@ public:
 	Triangle* copy();
 
 private:
-	Point* mPoints;
+	Point mOne;
+	Point mTwo;
+	Point mThree;
 	Vector mNormal;
 
 	void computeNormal();

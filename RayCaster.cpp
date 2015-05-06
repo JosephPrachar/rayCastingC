@@ -19,6 +19,8 @@ void RayCaster::castAllRays(ofstream* outputFile){
 	std::clock_t start;
 	start = std::clock();
 
+	cout<<mListLength;
+
 	// calculate total size of buffer
 	long size = mView.width * mView.height * 3;
 	// allocate buffer
@@ -38,6 +40,9 @@ void RayCaster::castAllRays(ofstream* outputFile){
 	while (count < size){
 		Color result = this->castRay(hitPointMem);
 		result.scaleForPrinting();
+
+		if (this->curX == 0 || this->curY == 0)
+			result =  Color(1,1,1);
 
 		// fill buffer with current pixel info
 		picture[count] = (byte)result.getRed();
@@ -130,6 +135,7 @@ Color RayCaster::castRay(Intersection* hitPointMem){
 		ambientColorAddition.add(pointLighting);
 
 		toReturn = ambientColorAddition;
+		//toReturn = intersect.mShape->getColor();
 	}
 
 	return toReturn;
@@ -156,10 +162,13 @@ int RayCaster::findIntersectionPoints(Ray ray, Intersection* hitPointMem){
 		bool hit = false;
 		Point pt = this->mShapeList[i]->rayIntersection(ray, &hit);
 		if (hit == true){
+			//cout<<i << " ";
 			hitPointMem[count] = Intersection(this->mShapeList[i], pt);
 			count++;
 		}		
 	}
+	//if (count !=0)
+	//	cout<<count;
 	return count;
 }
 

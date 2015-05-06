@@ -3,20 +3,27 @@
 
 #define EPSILON .000001
 
-Triangle::Triangle(Point points[3], Color color, Finish finish):
+//Triangle::Triangle(Point points[3], Color color, Finish finish):
+//	Shape(color, finish),
+//	mPoints(points)
+//{
+//	computeNormal();
+//}
+Triangle::Triangle(Color color, Finish finish, Point one, Point two, Point three):
 	Shape(color, finish),
-	mPoints(points)
+	mOne(one),
+	mTwo(two),
+	mThree(three)
 {
 	computeNormal();
 }
 Triangle::Triangle():
-	Shape(Color(), Finish()),
-	mPoints(NULL)
+	Shape(Color(), Finish())
 {
 }
 
 Point* Triangle::getPoints() const{
-	return this->mPoints;
+	return NULL;
 }
 
 Point Triangle::rayIntersection(Ray toIntersect, bool* hitsTriangle){
@@ -29,6 +36,7 @@ Point Triangle::rayIntersection(Ray toIntersect, bool* hitsTriangle){
 
 		Point intersection = toIntersect.getPoint().copy();
 		intersection.translate(scaled);
+		//cout<< this->mOne.getX();
 		return intersection;
 	}
 
@@ -45,8 +53,8 @@ bool Triangle::triangleIntersection(Ray toIntersect, float* out){
 	float det, inv_det, u, v;
 	float t;
 
-	edge1 = Point::differenceVector(this->mPoints[1], this->mPoints[0]);
-	edge2 = Point::differenceVector(this->mPoints[2], this->mPoints[0]);
+	edge1 = Point::differenceVector(this->mTwo, this->mOne);
+	edge2 = Point::differenceVector(this->mThree, this->mOne);
 
 	P = toIntersect.getDirection().crossWith(edge2);
 	det = edge1.dotWith(P);
@@ -54,7 +62,7 @@ bool Triangle::triangleIntersection(Ray toIntersect, float* out){
 		return false;
 
 	inv_det = 1.f / det;
-	T =  Point::differenceVector(toIntersect.getPoint(), this->mPoints[0]);
+	T =  Point::differenceVector(toIntersect.getPoint(), this->mOne);
 	u = T.dotWith(P) * inv_det;
 	if (u < 0.f || u > 1.f)
 		return false;
@@ -78,15 +86,12 @@ Vector Triangle::normalAtPoint(Point pt){
 }
 
 Triangle* Triangle::copy(){
-	Point pts[3];
-	for (int i = 0; i < 3; i++)
-		pts[i] = mPoints[i].copy();
-	return new Triangle(pts, this->mColor.copy(), this->mFinish.copy());
+	return new Triangle(this->mColor.copy(), this->mFinish.copy(), mOne.copy(), mTwo.copy(), mThree.copy());
 }
 
 void Triangle::computeNormal(){
-	Vector edge1 = Point::differenceVector(this->mPoints[1], this->mPoints[0]);
-	Vector edge2 = Point::differenceVector(this->mPoints[2], this->mPoints[0]);
+	Vector edge1 = Point::differenceVector(this->mTwo, this->mOne);
+	Vector edge2 = Point::differenceVector(this->mThree, this->mOne);
 
 	this->mNormal = edge1.crossWith(edge2);
 }
