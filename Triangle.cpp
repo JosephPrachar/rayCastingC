@@ -19,6 +19,21 @@ Point* Triangle::getPoints() const{
 	return this->mPoints;
 }
 
+Point Triangle::rayIntersection(Ray toIntersect, bool* hitsTriangle){
+	float scalar = 0;
+	*hitsTriangle = triangleIntersection(toIntersect, &scalar);
+
+	if (*hitsTriangle){
+		Vector scaled = toIntersect.getDirection().copy();
+		scaled.scale(scalar);
+
+		Point intersection = toIntersect.getPoint().copy();
+		intersection.translate(scaled);
+		return intersection;
+	}
+
+	return Point();
+}
 bool Triangle::triangleIntersection(Ray toIntersect, float* out){
 	// Möller–Trumbore intersection algorithm
 	// Translated from the C program posted on
