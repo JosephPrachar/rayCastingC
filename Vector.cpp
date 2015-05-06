@@ -32,6 +32,11 @@ void Vector::scale(float scalar){
 float Vector::dotWith(Vector other){
 	return (this->x * other.x) + (this->y * other.y) + (this->z * other.z);
 }
+Vector Vector::crossWith(Vector other){
+	return Vector(y*other.z - z*other.y,
+					z*other.x - x*other.z,
+					x*other.y - y*other.x);
+}
 void Vector::subtract(Vector toSubtract){
 	this->x -= toSubtract.x;
 	this->y -= toSubtract.y;
