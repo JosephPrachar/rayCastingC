@@ -7,7 +7,7 @@ using namespace std;
 void printHeader(ofstream* myFile, int width, int height);
 
 void readSetupFile(std::string file, Window* view, Point* eye, Color* ambient, Light* light);
-Sphere* readSphereFile(std::string file, int* length);
+Shape** readSphereFile(std::string file, int* length);
 
 // I have a feeling that most of these functions should be placed in another file, just not sure where to put them
 Sphere parseSphere(std::string line, bool* good);
@@ -23,24 +23,34 @@ std::vector<std::string> &split(const std::string &s, char delim, std::vector<st
 int main(int argc, char* argv[])
 	// two cmd line arguments are setup file and sphere list file
 {
+
+
 	std::clock_t start;
 	double inputFile,outputFile;
 	start = std::clock();
 
 	// set empty objects (all inputs should be in setup.in)
-	Window view = Window(0,0,0,0,0,0);
-	Point eye = Point(0,0,0);
-	Color ambientColor = Color(0,0,0);
-	Light pointLight = Light(Point(0,0,0), Color(0,0,0));
-
+	Window view = Window(-10, 10, -7.5, 7.5, 1024, 768);
+	Point eye = Point(0, 0, -14);
+	Color ambientColor = Color(1, 1, 1);
+	Light pointLight = Light(Point(-100, 100, -100), Color(1.5, 1.5, 1.5));
+#ifdef _DEBUG
+	//readSetupFile("setup.in", &view, &eye, &ambientColor, &pointLight);
+#else
 	readSetupFile(std::string(argv[1]), &view, &eye, &ambientColor, &pointLight);
+#endif
 	
 	int length = 0;
-	Sphere* spheres = readSphereFile(std::string(argv[2]), &length);
+
+#ifdef _DEBUG
+	Shape** shapes = readSphereFile("input1.in", &length);
+#else
+	Shape** shapes = readSphereFile(std::string(argv[2]), &length);
+#endif
 
 	inputFile = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
-	RayCaster rc = RayCaster(view, eye, spheres, length, ambientColor, pointLight);
+	RayCaster rc = RayCaster(view, eye, shapes, length, ambientColor, pointLight);
 
 	// todo: handle possible errors
 	ofstream myFile;
@@ -86,8 +96,8 @@ void readSetupFile(std::string file, Window* view, Point* eye, Color* ambient, L
 
 	f.close();
 }
-Sphere* readSphereFile(std::string file, int* length){
-	std::vector<Sphere> list;
+Shape** readSphereFile(std::string file, int* length){
+	std::vector<Shape*> list;
 	std::string line;
 
 	std::ifstream f(file);
@@ -95,7 +105,7 @@ Sphere* readSphereFile(std::string file, int* length){
 	if (f.is_open()){
 		while(getline(f, line)){
 			bool good = false;
-			Sphere temp = parseSphere(line, &good);
+			Shape* temp = &parseSphere(line, &good);
 
 			if (good == true){
 				list.push_back(temp);
@@ -103,11 +113,15 @@ Sphere* readSphereFile(std::string file, int* length){
 		}
 		f.close();
 	}
-
+#ifdef _DEBUG
+	list = std::vector<Shape*>();
+	list.push_back(&Sphere(Point(1, 1, 0), 2, Color(1, 0, 1), Finish(.2, .4, .5, .05)));
+	list.push_back(&Sphere(Point(8, -10, 110), 100, Color(.2, .2, .6), Finish(.4, .8, 0, .05)));
+#endif
 	*length = list.size();
-	Sphere* toReturn = new Sphere[*length];
+	Shape** toReturn = new Shape*[*length];
 	for (int i = 0; i < *length; ++i){
-		toReturn[i] = *(list[i].copy());
+		toReturn[i] = (list[i]->copy());
 	}
 	list.~vector();
 

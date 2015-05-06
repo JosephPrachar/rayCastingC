@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-RayCaster::RayCaster(Window view, Point eyePoint, Shape* shapeList, int listLength, Color ambientColor, Light pointLight):
+RayCaster::RayCaster(Window view, Point eyePoint, Shape** shapeList, int listLength, Color ambientColor, Light pointLight):
 	mView(view),
 	mEye(eyePoint),
 	mShapeList(shapeList),
@@ -154,9 +154,9 @@ int RayCaster::findIntersectionPoints(Ray ray, Intersection* hitPointMem){
 	int count = 0;
 	for (int i = 0; i < this->mListLength; ++i){
 		bool hit = false;
-		Point pt = this->mShapeList[i].rayIntersection(ray, &hit);
+		Point pt = this->mShapeList[i]->rayIntersection(ray, &hit);
 		if (hit == true){
-			hitPointMem[count] = Intersection(&this->mShapeList[i], pt);
+			hitPointMem[count] = Intersection(this->mShapeList[i], pt);
 			count++;
 		}		
 	}

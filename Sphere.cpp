@@ -70,7 +70,7 @@ Vector Sphere::normalAtPoint(Point pt){
 }
 
 Sphere* Sphere::copy(){
-	return &Sphere(mCenter.copy(), mRadius, mColor.copy(), mFinish.copy());
+	return new Sphere(mCenter.copy(), mRadius, mColor.copy(), mFinish.copy());
 }
 
 std::wstringstream& operator<<(std::wstringstream& os, const Sphere& obj){

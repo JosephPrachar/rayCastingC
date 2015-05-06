@@ -3,7 +3,7 @@
 
 class RayCaster {
 public:
-	RayCaster(Window view, Point eyePoint, Shape* shapeList, int listLength, Color ambientColor, Light pointLight);
+	RayCaster(Window view, Point eyePoint, Shape** shapeList, int listLength, Color ambientColor, Light pointLight);
 
 	Color castRay(Intersection* hitPointMem);
 	void castAllRays(ofstream* outputFile); // pass some sort of file stream
@@ -15,7 +15,7 @@ private:
 
 	Window mView;
 	Point mEye;
-	Shape* mShapeList;
+	Shape** mShapeList;
 	int mListLength;
 	Color mAmbient;
 	Light mPointLight;
