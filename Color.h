@@ -4,6 +4,7 @@
 class Color{
 public:
 	Color(float red, float green, float blue);
+	Color();
 
 	static const int MAX_VALUE = 255;
 

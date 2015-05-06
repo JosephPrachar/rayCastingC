@@ -5,6 +5,9 @@ Color::Color(float red, float green, float blue){
 	this->green = green;
 	this->blue = blue;
 }
+Color::Color(){
+	Color(0,0,0);
+}
 
 float Color::getRed() const{
 	return this->red;

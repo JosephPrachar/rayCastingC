@@ -4,6 +4,7 @@
 class Vector{
 public:
 	Vector(float x, float y, float z);
+	Vector();
 
 	float getX() const;
 	float getY() const;

@@ -5,6 +5,10 @@ Vector::Vector(float x, float y, float z){
 	this->y = y;
 	this->z = z;
 }
+Vector::Vector()
+{
+	Vector(0,0,0);
+}
 
 float Vector::getX() const{
 	return this->x;

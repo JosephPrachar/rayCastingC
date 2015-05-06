@@ -6,6 +6,9 @@ Finish::Finish(float ambient, float diffuse, float specular, float roughness){
 	this->mSpecular = specular;
 	this->mRough = roughness;	
 }
+Finish::Finish(){
+	Finish(0,0,0,0);
+}
 
 float Finish::getAmbient() const{
 	return this->mAmbient;

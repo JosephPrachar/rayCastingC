@@ -4,6 +4,7 @@
 class Finish{
 public:
 	Finish(float ambient, float diffuse, float specular, float roughness);
+	Finish();
 
 	float getAmbient() const;
 	float getDiffuse() const;

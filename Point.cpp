@@ -5,6 +5,9 @@ Point::Point(float x, float y, float z){
 	this->y = y;
 	this->z = z;
 }
+Point::Point(){
+	Point(0,0,0);
+}
 
 float Point::getX() const{
 	return this->x;
