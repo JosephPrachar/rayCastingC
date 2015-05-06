@@ -2,7 +2,7 @@
 #include "shape.h"
 class Triangle : public Shape {
 public:
-	Triangle(Point* points, Color color, Finish finish);
+	Triangle(Point points[3], Color color, Finish finish);
 	Triangle();
 
 	Point* getPoints() const;

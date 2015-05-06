@@ -3,7 +3,7 @@
 
 #define EPSILON .000001
 
-Triangle::Triangle(Point* points, Color color, Finish finish):
+Triangle::Triangle(Point points[3], Color color, Finish finish):
 	Shape(color, finish),
 	mPoints(points)
 {
@@ -71,4 +71,22 @@ bool Triangle::triangleIntersection(Ray toIntersect, float* out){
 	}
 
 	return false;
+}
+
+Vector Triangle::normalAtPoint(Point pt){
+	return this->mNormal;
+}
+
+Triangle* Triangle::copy(){
+	Point pts[3];
+	for (int i = 0; i < 3; i++)
+		pts[i] = mPoints[i].copy();
+	return new Triangle(pts, this->mColor.copy(), this->mFinish.copy());
+}
+
+void Triangle::computeNormal(){
+	Vector edge1 = Point::differenceVector(this->mPoints[1], this->mPoints[0]);
+	Vector edge2 = Point::differenceVector(this->mPoints[2], this->mPoints[0]);
+
+	this->mNormal = edge1.crossWith(edge2);
 }
