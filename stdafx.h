@@ -6,6 +6,8 @@
 #pragma once
 
 typedef unsigned char byte;
+using namespace std;
+#include <vector>
 
 #include "targetver.h"
 

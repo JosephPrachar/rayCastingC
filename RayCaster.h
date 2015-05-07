@@ -1,9 +1,10 @@
 #pragma once
 #include "stdafx.h"
+using namespace std;
 
 class RayCaster {
 public:
-	RayCaster(Window view, Point eyePoint, Shape** shapeList, int listLength, Color ambientColor, Light pointLight);
+	RayCaster(Window view, Point eyePoint, std::vector<Shape*> shapeList, Color ambientColor, Light pointLight);
 
 	Color castRay(Intersection* hitPointMem);
 	void castAllRays(ofstream* outputFile); // pass some sort of file stream
@@ -15,8 +16,7 @@ private:
 
 	Window mView;
 	Point mEye;
-	Shape** mShapeList;
-	int mListLength;
+	std::vector<Shape*> mShapeList;
 	Color mAmbient;
 	Light mPointLight;
 	

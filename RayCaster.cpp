@@ -1,14 +1,14 @@
 #include "stdafx.h"
+using namespace std;
+#include <vector>
 
-RayCaster::RayCaster(Window view, Point eyePoint, Shape** shapeList, int listLength, Color ambientColor, Light pointLight):
+RayCaster::RayCaster(Window view, Point eyePoint, vector<Shape*> shapeList, Color ambientColor, Light pointLight):
 	mView(view),
 	mEye(eyePoint),
 	mShapeList(shapeList),
 	mAmbient(ambientColor),
 	mPointLight(pointLight)
 {
-	this->mListLength = listLength;
-
 	this->curX = mView.x_min;
 	this->curY = mView.y_max;
 
@@ -19,14 +19,14 @@ void RayCaster::castAllRays(ofstream* outputFile){
 	std::clock_t start;
 	start = std::clock();
 
-	cout<<mListLength;
+	cout<<this->mShapeList.size();
 
 	// calculate total size of buffer
 	long size = mView.width * mView.height * 3;
 	// allocate buffer
 	byte* picture = new byte[size];
 	// allocate memory for findIntersectionPoints
-	Intersection* hitPointMem = new Intersection[this->mListLength];
+	Intersection* hitPointMem = new Intersection[this->mShapeList.size()];
 
 	// check for valid memory allocation
 	if (hitPointMem == NULL || picture == NULL){
@@ -158,7 +158,7 @@ int RayCaster::shortestDistFromPoint(Intersection* hitPoints, int length){
 
 int RayCaster::findIntersectionPoints(Ray ray, Intersection* hitPointMem){	
 	int count = 0;
-	for (int i = 0; i < this->mListLength; ++i){
+	for (int i = 0; i < this->mShapeList.size(); ++i){
 		bool hit = false;
 		Point pt = this->mShapeList[i]->rayIntersection(ray, &hit);
 		if (hit == true){

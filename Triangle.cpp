@@ -94,4 +94,5 @@ void Triangle::computeNormal(){
 	Vector edge2 = Point::differenceVector(this->mThree, this->mOne);
 
 	this->mNormal = edge1.crossWith(edge2);
+	//this->mNormal.scale(-1);
 }
