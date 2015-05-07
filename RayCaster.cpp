@@ -13,6 +13,10 @@ RayCaster::RayCaster(Window view, Point eyePoint, vector<Shape*> shapeList, Colo
 	this->curY = mView.y_max;
 
 	this->computeTime = -1;
+
+	for (int i = 0; i < shapeList.size(); i++)
+		if (typeid(*shapeList[i]) == typeid(Triangle))
+			((Triangle*)shapeList[i])->alignNormalWithEyePt(this->mEye);
 }
 
 void RayCaster::castAllRays(ofstream* outputFile){
@@ -39,8 +43,8 @@ void RayCaster::castAllRays(ofstream* outputFile){
 		Color result = this->castRay(hitPointMem);
 		result.scaleForPrinting();
 
-		if (this->curX == 0 || this->curY == 0)
-			result =  Color(1,1,1);
+		//if (this->curX == 0 || this->curY == 0)
+			//result =  Color(1,1,1);
 
 		// fill buffer with current pixel info
 		picture[count] = (byte)result.getRed();

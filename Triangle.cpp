@@ -84,6 +84,25 @@ bool Triangle::triangleIntersection(Ray toIntersect, float* out){
 Vector Triangle::normalAtPoint(Point pt){
 	return this->mNormal;
 }
+void Triangle::alignNormalWithEyePt(Point eye){
+	Point avg = mOne.copy();
+	
+	avg.translate(Point::vectorFromTo(Point(0,0,0), mTwo));
+	avg.translate(Point::vectorFromTo(Point(0,0,0), mThree));
+	Vector v = Point::vectorFromTo(Point(0,0,0), avg);
+	v.scale(.3);
+	avg = Point(0,0,0);
+	avg.translate(v);
+
+	Vector eyeToCenter = Point::vectorFromTo(avg, eye);
+	float dot = eyeToCenter.dotWith(this->mNormal);
+
+	if (dot < 0)
+	{
+		this->mNormal.scale(-1);
+		cout<< this->mNormal.getX() << " " << this->mNormal.getY() << " " << this->mNormal.getZ() << endl;
+	}
+}
 
 Triangle* Triangle::copy(){
 	return new Triangle(this->mColor.copy(), this->mFinish.copy(), mOne.copy(), mTwo.copy(), mThree.copy());

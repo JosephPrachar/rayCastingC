@@ -11,6 +11,7 @@ public:
 	Point rayIntersection(Ray toIntersect, bool* hitsTriangle);
 	bool triangleIntersection(Ray toIntersect, float* out);
 	Vector normalAtPoint(Point pt);
+	void alignNormalWithEyePt(Point eye);
 	Triangle* copy();
 
 private:

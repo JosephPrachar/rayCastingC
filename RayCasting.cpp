@@ -32,12 +32,18 @@ int main(int argc, char* argv[])
 	Point eye = Point(0, 0, -14);
 	Color ambientColor = Color(1, 1, 1);
 	//Light pointLight = Light(Point(-100, 100, -100), Color(1.5, 1.5, 1.5));
-	Light pointLight = Light(Point(40, 40, -100), Color(1.5, 1.5, 1.5));
+	Light pointLight = Light(Point(0, 0, -100), Color(1.5, 1.5, 1.5));
 	
+#ifndef _DEBUG
 	readSetupFile(std::string(argv[1]), &view, &eye, &ambientColor, &pointLight);
+#endif
 
 	std::vector<Shape*> shapes = std::vector<Shape*>();
+#ifndef _DEBUG
 	readShapeFile(std::string(argv[2]), &shapes);
+#else
+	readShapeFile("", &shapes);
+#endif
 
 	inputFile = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
@@ -89,6 +95,7 @@ void readSetupFile(std::string file, Window* view, Point* eye, Color* ambient, L
 }
 void readShapeFile(std::string file, std::vector<Shape*>* list){
 
+#ifndef _DEBUG
 	std::string line;
 
 	std::ifstream f(file);
@@ -104,18 +111,24 @@ void readShapeFile(std::string file, std::vector<Shape*>* list){
 		}
 		f.close();
 	}
-
+#endif
 	//list->push_back(new Triangle(Color(0,0,1), Finish(.2, .4, .5, .05), Point(0,0,0), Point(1,0,-2), Point(0,1,-1)));
 	//list->push_back(new Triangle(Color(1,0,0), Finish(.2, .4, .5, .05), Point(4,4,0), Point(4,0,-10), Point(0,4,-10)));
 	//list->push_back(new Triangle(Color(0,1,0), Finish(.2, .4, .5, .05), Point(1,2,0), Point(-1,0,0), Point(0,-1,0)));
 	//list->push_back(new Sphere(Point(-1, 1, 5), 2, Color(1, 0, 1), Finish(.2, .4, .5, .05)));
+	list->clear();
 
-	list->push_back(new Triangle(Color(1,0,0), Finish(.2, .4, .5, .05), Point(0,0,-1), Point(0,1,0), Point(1,0,0)));
+	list->push_back(new Triangle(Color(1,0,0), Finish(.2, .4, .5, .05), Point(0,0,-1), Point(1,0,0), Point(0,1,0)));
 	list->push_back(new Triangle(Color(1,0,0), Finish(.2, .4, .5, .05), Point(0,0,-1), Point(-1,0,0), Point(0,1,0)));
 	list->push_back(new Triangle(Color(1,0,0), Finish(.2, .4, .5, .05), Point(0,0,-1), Point(0,-1,0), Point(-1,0,0)));
 	list->push_back(new Triangle(Color(1,0,0), Finish(.2, .4, .5, .05), Point(0,0,-1), Point(1,0,0), Point(0,-1,0)));
 
-	list->push_back(new Sphere(Point(8, -10, 110), 100, Color(.2, .2, .6), Finish(.4, .8, 0, .05)));
+	//list->push_back(new Triangle(Color(0,0,0), Finish(.2, .4, .5, .05), Point(0,0,0), Point(0,1,0), Point(1,0,0)));
+	//list->push_back(new Triangle(Color(0,0,0), Finish(.2, .4, .5, .05), Point(0,0,0), Point(-1,0,0), Point(0,1,0)));
+	//list->push_back(new Triangle(Color(0,0,0), Finish(.2, .4, .5, .05), Point(0,0,0), Point(0,-1,0), Point(-1,0,0)));
+	//list->push_back(new Triangle(Color(0,0,0), Finish(.2, .4, .5, .05), Point(0,0,0), Point(1,0,0), Point(0,-1,0)));
+
+	//list->push_back(new Sphere(Point(8, -10, 110), 100, Color(.2, .2, .6), Finish(.4, .8, 0, .05)));
 }
 
 Sphere* parseSphere(std::string line, bool* good){
