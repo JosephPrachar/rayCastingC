@@ -19,8 +19,6 @@ void RayCaster::castAllRays(ofstream* outputFile){
 	std::clock_t start;
 	start = std::clock();
 
-	cout<<this->mShapeList.size();
-
 	// calculate total size of buffer
 	long size = mView.width * mView.height * 3;
 	// allocate buffer

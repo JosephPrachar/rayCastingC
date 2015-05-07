@@ -7,10 +7,10 @@ using namespace std;
 void printHeader(ofstream* myFile, int width, int height);
 
 void readSetupFile(std::string file, Window* view, Point* eye, Color* ambient, Light* light);
-void readSphereFile(std::string file, int* length, std::vector<Shape*>* list);
+void readShapeFile(std::string file, std::vector<Shape*>* list);
 
 // I have a feeling that most of these functions should be placed in another file, just not sure where to put them
-Sphere parseSphere(std::string line, bool* good);
+Sphere* parseSphere(std::string line, bool* good);
 Window parseWindow(std::string line, bool* good);
 Point parsePoint(std::string line, bool* good);
 Light parseLight(std::string line, bool* good);
@@ -21,7 +21,7 @@ std::vector<std::string> split(const std::string &s, char delim);
 std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems);
 
 int main(int argc, char* argv[])
-	// two cmd line arguments are setup file and sphere list file
+	// two cmd line arguments are 0:setup file and 1:sphere list file
 {
 	std::clock_t start;
 	double inputFile,outputFile;
@@ -34,10 +34,10 @@ int main(int argc, char* argv[])
 	//Light pointLight = Light(Point(-100, 100, -100), Color(1.5, 1.5, 1.5));
 	Light pointLight = Light(Point(40, 40, -100), Color(1.5, 1.5, 1.5));
 	
-	int length = 0;
+	readSetupFile(std::string(argv[1]), &view, &eye, &ambientColor, &pointLight);
 
 	std::vector<Shape*> shapes = std::vector<Shape*>();
-	readSphereFile("input1.in", &length, &shapes);
+	readShapeFile(std::string(argv[2]), &shapes);
 
 	inputFile = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
@@ -87,7 +87,23 @@ void readSetupFile(std::string file, Window* view, Point* eye, Color* ambient, L
 
 	f.close();
 }
-void readSphereFile(std::string file, int* length, std::vector<Shape*>* list){
+void readShapeFile(std::string file, std::vector<Shape*>* list){
+
+	std::string line;
+
+	std::ifstream f(file);
+	int count = 0;
+	if (f.is_open()){
+		while(getline(f, line)){
+			bool good = false;
+			Shape* temp = parseSphere(line, &good);
+
+			if (good == true){
+				list->push_back(temp);
+			}
+		}
+		f.close();
+	}
 
 	//list->push_back(new Triangle(Color(0,0,1), Finish(.2, .4, .5, .05), Point(0,0,0), Point(1,0,-2), Point(0,1,-1)));
 	//list->push_back(new Triangle(Color(1,0,0), Finish(.2, .4, .5, .05), Point(4,4,0), Point(4,0,-10), Point(0,4,-10)));
@@ -102,15 +118,15 @@ void readSphereFile(std::string file, int* length, std::vector<Shape*>* list){
 	list->push_back(new Sphere(Point(8, -10, 110), 100, Color(.2, .2, .6), Finish(.4, .8, 0, .05)));
 }
 
-Sphere parseSphere(std::string line, bool* good){
+Sphere* parseSphere(std::string line, bool* good){
 	vector<float> vals = parseFloats(line, 11);
 	if (vals.size() != 0){
 		*good = true;
-		return Sphere(Point(vals[0], vals[1], vals[2]), vals[3], Color(vals[4], vals[5], vals[6]), Finish(vals[7], vals[8], vals[9], vals[10]));
+		return new Sphere(Point(vals[0], vals[1], vals[2]), vals[3], Color(vals[4], vals[5], vals[6]), Finish(vals[7], vals[8], vals[9], vals[10]));
 	}
 
 	*good = false;
-	return Sphere();
+	return new Sphere();
 }
 Window parseWindow(std::string line, bool* good){
 	vector<float> vals = parseFloats(line, 6);
