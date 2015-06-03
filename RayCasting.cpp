@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
 
 	// todo: handle possible errors
 	ofstream myFile;
-	myFile.open("image.ppm");
+	myFile.open(std::string(argv[3]));
 
 	printHeader(&myFile, view.width, view.height);
 	rc.castAllRays(&myFile);
