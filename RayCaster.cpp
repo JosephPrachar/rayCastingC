@@ -39,8 +39,8 @@ void RayCaster::castAllRays(ofstream* outputFile){
 		Color result = this->castRay(hitPointMem);
 		result.scaleForPrinting();
 
-		if (this->curX == 0 || this->curY == 0)
-			result =  Color(1,1,1);
+		//if (this->curX == 0 || this->curY == 0)
+		//	result =  Color(1,1,1);
 
 		// fill buffer with current pixel info
 		picture[count] = (byte)result.getRed();
@@ -229,8 +229,8 @@ Color RayCaster::computePointAndSpecular(Intersection intersect, Intersection* h
 		specColor = this->mPointLight.getColor().copy();
 		specColor.scale(scale);
 	}
-
-	pointColor.add(specColor);
+	//return specColor;
+	//pointColor.add(specColor);
 	return pointColor;
 }
 

@@ -34,7 +34,7 @@ void Color::capValue(){
 }
 
 void Color::scaleForPrinting(){
-	this->capValue();
+	//this->capValue();
 	this->scale(Color::MAX_VALUE);
 	this->red = (int)red;
 	this->green = (int)green;

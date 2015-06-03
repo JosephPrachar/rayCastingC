@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 
 	// todo: handle possible errors
 	ofstream myFile;
-	myFile.open("image.ppm");
+	myFile.open(std::string(argv[3]));
 
 	printHeader(&myFile, view.width, view.height);
 	rc.castAllRays(&myFile);
@@ -115,7 +115,7 @@ void readShapeFile(std::string file, std::vector<Shape*>* list){
 	list->push_back(new Triangle(Color(1,0,0), Finish(.2, .4, .5, .05), Point(0,0,-1), Point(0,-1,0), Point(-1,0,0)));
 	list->push_back(new Triangle(Color(1,0,0), Finish(.2, .4, .5, .05), Point(0,0,-1), Point(1,0,0), Point(0,-1,0)));
 
-	list->push_back(new Sphere(Point(8, -10, 110), 100, Color(.2, .2, .6), Finish(.4, .8, 0, .05)));
+	//list->push_back(new Sphere(Point(8, -10, 110), 100, Color(.2, .2, .6), Finish(.4, .8, 0, .05)));
 }
 
 Sphere* parseSphere(std::string line, bool* good){
